@@ -1,0 +1,27 @@
+name: 'Argo CD Diff Action'
+description: 'Run argocd app diff and output markdown result'
+inputs:
+  argocd-version:
+    description: 'Argo CD CLI version to use (e.g., v3.0.12)'
+    required: false
+    default: 'v3.0.12'
+  server:
+    description: 'Argo CD server address'
+    required: true
+  project:
+    description: 'Argo CD project name'
+    required: true
+  token:
+    description: 'Argo CD auth token'
+    required: true
+  revision:
+    description: 'Git revision to diff against'
+    required: true
+outputs:
+  result:
+    description: 'Markdown-formatted Argo CD diff result'
+  filename:
+    description: 'Name the generated diff-summary.md file'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
