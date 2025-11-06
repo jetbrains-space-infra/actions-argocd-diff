@@ -1,5 +1,5 @@
 name: 'Argo CD Diff Action'
-description: 'Run argocd app diff and output markdown result'
+description: 'Run argocd app diff for apps-in-app manifests and output a markdown report'
 inputs:
   argocd-version:
     description: 'Argo CD CLI version to use (e.g., v3.0.12)'
@@ -8,20 +8,30 @@ inputs:
   server:
     description: 'Argo CD server address'
     required: true
-  project:
-    description: 'Argo CD project name'
-    required: true
   token:
     description: 'Argo CD auth token'
     required: true
-  revision:
-    description: 'Git revision to diff against'
-    required: true
+  argocd_diff_flags:
+    description: 'Extra flags for `argocd app diff` (e.g., --grpc-web --refresh)'
+    required: false
+    default: ''
+  app_glob:
+    description: 'Glob to find Application manifests'
+    required: false
+    default: '**/*.application.yaml'
+  only_changed:
+    description: 'If true, diff only manifests changed vs BASE_REF'
+    required: false
+    default: 'false'
+  base_ref:
+    description: 'Git base ref used when only-changed=true'
+    required: false
+    default: 'origin/main'
 outputs:
   result:
     description: 'Markdown-formatted Argo CD diff result'
   filename:
-    description: 'Name the generated diff-summary.md file'
+    description: 'Generated diff-summary markdown filename'
 runs:
   using: 'docker'
   image: 'Dockerfile'
